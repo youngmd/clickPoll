@@ -26,7 +26,7 @@ myapp.controller('PollController', function ($scope, $http, $filter, $modal, $ti
         if($scope.covervote) {
             $http({
                 method: "POST",
-                url: '/cover',
+                url: '/clickpoll/cover',
                 data: $scope.selected
             }).then(function(res) {
                 $scope.visited = true;
@@ -60,7 +60,7 @@ myapp.controller('PollController', function ($scope, $http, $filter, $modal, $ti
             console.log($scope.selected);
             $http({
                     method: "POST",
-                    url: '/include',
+                    url: '/clickpoll/include',
                     data: $scope.selected
                 }).then(function(res) {
 
@@ -78,7 +78,7 @@ myapp.controller('PollController', function ($scope, $http, $filter, $modal, $ti
     $scope.getImages = function() {
         $http({
             method: "GET",
-            url: "/pollImages"
+            url: "/clickpoll/pollImages"
         }).then(function (res) {
             $scope.images = res.data;
             $scope.images.sort(function (a, b) {
@@ -87,9 +87,9 @@ myapp.controller('PollController', function ($scope, $http, $filter, $modal, $ti
             var counter = 1;
             angular.forEach($scope.images, function (img) {
                 counter++;
-                img['url'] = "/public/images/poll/" + img.filename + "?dim=1024x1024";
-                img['thumb'] = "/public/images/poll/" + img.filename + "?dim=256x256";
-                img['tile'] = "/public/images/poll/" + img.filename + "?dim=128x128";
+                img['url'] = "/clickpoll/public/images/poll/" + img.filename + "?dim=1024x1024";
+                img['thumb'] = "/clickpoll/public/images/poll/" + img.filename + "?dim=256x256";
+                img['tile'] = "/clickpoll/public/images/poll/" + img.filename + "?dim=128x128";
                 img['title'] = img.filename;
                 img['selected'] = false;
                 img['showme'] = false;
@@ -150,7 +150,7 @@ myapp.controller('PollController', function ($scope, $http, $filter, $modal, $ti
                         img.showme = false;
                     });
 
-                    var url = '/download/'+img.filename;
+                    var url = '/clickpoll/download/'+img.filename;
 
                     $window.location.assign(url);
                 };
@@ -206,7 +206,7 @@ myapp.controller('AdminController', function ($scope, $http, $location, $modal, 
     $scope.getImages = function() {
         $http({
             method: "GET",
-            url: "/pollImages",
+            url: "/clickpoll/pollImages",
             params: { 'foobar': new Date().getTime() }
         }).then(function (res) {
             $scope.images = res.data;
@@ -227,7 +227,7 @@ myapp.controller('AdminController', function ($scope, $http, $location, $modal, 
     $scope.updateImages = function() {
         $http({
             method: "POST",
-            url: "/pollUpdate",
+            url: "/clickpoll/pollUpdate",
             data: $scope.images
         }).then(function (res) {
             toaster.pop('info','Updated', 'Image array updated successfully');
@@ -251,7 +251,7 @@ myapp.controller('AdminController', function ($scope, $http, $location, $modal, 
                 $scope.confirm = function () {
                     $http({
                         method: "GET",
-                        url: "/resetPoll"
+                        url: "/clickpoll/resetPoll"
                     }).then(function (res) {
                         toaster.pop('info','Reset', 'The poll values have been reset');
                         $modalInstance.close();
@@ -314,7 +314,7 @@ myapp.controller('UploadController', function ($scope, $http, FileUploader, toas
 
 
         var uploader = $scope.uploader = new FileUploader({
-            url: 'upload/'+$scope.roles[0]
+            url: 'clickpoll/upload/'+$scope.roles[0]
         });
 
         // FILTERS

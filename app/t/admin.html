@@ -26,7 +26,7 @@
                 <div class="panel-body">
                     <div ng-show="coverTie">There is a tie!</div>
                     <div ng-hide="coverTie">
-                        <img src="{{'/public/images/poll/' + coverWinner.filename + '?dim=128x128';}}" alt="{{coverWinner.filename}}">
+                        <img src="{{'/clickpoll/public/images/poll/' + coverWinner.filename + '?dim=128x128';}}" alt="{{coverWinner.filename}}">
                         <h5>{{coverWinner.filename}}</h5>
                     </div>
                 </div>
@@ -41,7 +41,7 @@
                         <h4>{{$index + 1}}</h4>
                     </td>
                     <td>
-                        <img src="{{'/public/images/poll/' + img.filename + '?dim=64x64';}}" alt="{{img.filename}}">
+                        <img src="{{'/clickpoll/public/images/poll/' + img.filename + '?dim=64x64';}}" alt="{{img.filename}}">
                     </td>
                     <td>
                         <h4>{{img.filename}} - {{img.include_votes}}</h4>
@@ -54,7 +54,7 @@
     <div class="row" ng-repeat="img in images" ng-if="details">
         <div class="col-md-3">
             <a href="" class="thumbnail">
-                <img src="{{'/public/images/poll/' + img.filename + '?dim=256x256';}}" alt="{{img.filename}}">
+                <img src="{{'/clickpoll/public/images/poll/' + img.filename + '?dim=256x256';}}" alt="{{img.filename}}">
             </a>
         </div>
 

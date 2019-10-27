@@ -8,6 +8,8 @@ var config = require('./config');
 var fs = require("fs");
 var reload = require('require-reload')(require);
 
+var base = '/clickpoll';
+
 var logger = new winston.Logger(config.logger.winston);
 
 var storage = multer.diskStorage({ //multers disk storage settings
@@ -32,14 +34,14 @@ var upload = multer({ //multer settings
 
 module.exports = function (app) {
 
-    app.use('/node_modules', express.static(path.join(__dirname, '/../node_modules')));
-    app.use('/js', express.static(path.join(__dirname, 'js')));
-    app.use('/t', express.static(path.join(__dirname, 't')));
-    app.use('/images', express.static(path.join(__dirname, 'images')));
+    app.use(base+'/node_modules', express.static(path.join(__dirname, '/../node_modules')));
+    app.use(base+'/js', express.static(path.join(__dirname, 'js')));
+    app.use(base+'/t', express.static(path.join(__dirname, 't')));
+    app.use(base+'/images', express.static(path.join(__dirname, 'images')));
 
 
     /** API path that will upload the files */
-    app.post('/upload/:group', function(req, res) {
+    app.post(base+'/upload/:group', function(req, res) {
         upload(req,res,function(err){
             if(err){
                 res.json({error_code:1,err_desc:err});
@@ -50,7 +52,7 @@ module.exports = function (app) {
         })
     });
 
-    app.post('/include', function(req, res) {
+    app.post(base+'/include', function(req, res) {
         var results = reload("../images.json");
         var choices = req.body;
         console.log(choices);
@@ -68,7 +70,7 @@ module.exports = function (app) {
         });
     });
 
-    app.post('/cover', function(req, res) {
+    app.post(base+'/cover', function(req, res) {
         var results = reload("../images.json");
         var choices = req.body;
         console.log(choices);
@@ -86,7 +88,7 @@ module.exports = function (app) {
         });
     });
 
-    app.get('/resetPoll', function(req, res) {
+    app.get(base+'/resetPoll', function(req, res) {
         var results = reload("../images.json");
         results.forEach(function (img) {
             img.include_votes = 0;
@@ -99,7 +101,7 @@ module.exports = function (app) {
         });
     });
 
-    app.get('/pollUpdate', function(req, res) {
+    app.post(base+'/pollUpdate', function(req, res) {
         var images = req.body;
 
         fs.writeFile('./images.json', JSON.stringify(images), "utf8", (err) => {
@@ -109,7 +111,7 @@ module.exports = function (app) {
     });
 
 
-    app.get('/pollImages', function (req, res) {
+    app.get(base+'/pollImages', function (req, res) {
 
         var images = reload("../images.json");
         if (images.length >= 1) {
@@ -136,13 +138,13 @@ module.exports = function (app) {
         };
     });
 
-    app.get('/download/:filename', function(req, res){
+    app.get(base+'/download/:filename', function(req, res){
         var file = './public/images/poll/' + req.params.filename;
         res.download(file); // Set disposition and send it.
     });
 
     // application -------------------------------------------------------------
-    app.get('/*', function (req, res) {
+    app.get(base+'/*', function (req, res) {
         res.sendFile(__dirname + '/index.html'); // load the single view file (angular will handle the page changes on the front-end)
     });
 };
